@@ -79,3 +79,8 @@ def downloadAttachments(caseNumber):
 		
 for caseNumber in range(startCase, endCase+1):
 	downloadAttachments(caseNumber)
+
+print("\nAll Done!\n")
+
+if endCase == 50:
+	print("NOTE: You ran the script with the default endCase variable set to 50, so all of your cases were not downloaded. Edit the file to adjust the case range if you want to download more.")
