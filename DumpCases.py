@@ -33,7 +33,7 @@ def downloadCases(fromCase, toCase):
 	)
 
 	try:
-		resp = requests.post(url="https://redsweater.com", json=[])
+		resp = requests.post(url=url, json=params)
 		data = resp.json()
 	except Exception as e:
 		print(f"ERROR: Failed with error: {e}, expected JSON response, got {resp.status_code} response: {resp.text[:100]}...")
