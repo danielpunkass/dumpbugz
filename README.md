@@ -5,7 +5,7 @@ FogBugz used to support a purpose-built function for downloading an archive of d
 
 These scripts facilitate a two-step dump, first by downloading the JSON data for each of the cases in your FogBugz account, and then by parsing the downloaded content, determining the list of attachments for each case, and then downloading and storing each attachment file alongside the case data.
 
-To use the scripts:
+### To Use
 
 1. Obtain a [FogBugz API key](https://support.fogbugz.com/hc/en-us/articles/360011330873-Create-API-Token-using-the-FogBugz-UI).
 2. Edit these variables near the top of each script:
@@ -16,5 +16,12 @@ To use the scripts:
 5. Run ./DownloadAttachments.py to scan the downloaded JSON case data and download referenced attachments.
 
 By default the scripts will only download cases between case 1 and 50. Edit the pertinent variables near the top of the scripts to expand the case range as you gain confidence that you are downloading what you expect.
+
+### Python Setup
+
+If you have trouble with your python setup, or if you just want to isolate the dependency on the requests library, try initializing a virtual environment before running the script:
+
+1. python3 -m venv ./dumpbugz-python
+2. source ./dumpbugz-python/bin/activate
 
 Enjoy!
