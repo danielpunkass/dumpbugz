@@ -51,7 +51,7 @@ def downloadCases(fromCase, toCase):
 currentStartCase = startCase
 while currentStartCase <= endCase:
 	caseCount = casesToFetchPerRequest
-	currentEndCase = currentStartCase + casesToFetchPerRequest
+	currentEndCase = currentStartCase + (casesToFetchPerRequest - 1)
 	if currentEndCase > endCase: currentEndCase = endCase
 	
 	downloadCases(currentStartCase, currentEndCase)
