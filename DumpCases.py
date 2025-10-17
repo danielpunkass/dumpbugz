@@ -9,12 +9,15 @@ fogBugzDomain = "redsweater.fogbugz.com"
 startCase = 1
 endCase = 50
 casesToFetchPerRequest = 50
+quitAfterError = True
 
 if apiToken == "" or fogBugzDomain == "redsweater.fogbugz.com":
-	print("Error: You must edit the script to use your own API token and FogBugz domain.")
+	print("ERROR: You must edit the script to use your own API token and FogBugz domain.")
 	sys.exit(1)
 	
 url = 'https://%s/f/api/0/jsonapi' % fogBugzDomain
+
+failedRanges = []
 
 def downloadCases(fromCase, toCase):
 	searchString = "case:%s..%s" % (fromCase, toCase)
@@ -28,14 +31,32 @@ def downloadCases(fromCase, toCase):
 		cols=allColumns
 	)
 
-	resp = requests.post(url=url, json=params)
-	data = resp.json()
+	try:
+		resp = requests.post(url="https://redsweater.com", json=[])
+		data = resp.json()
+	except Exception as e:
+		print(f"ERROR: Failed with error: {e}, expected JSON response, got {resp.status_code} response: {resp.text[:100]}...")
+		failedRanges.append(f"{fromCase}..{toCase}")
+		if quitAfterError:
+			sys.exit(1)
+		else:
+			return
+
 
 	# Dump each case result separately in the target dir
 	dumpDir = "./Cases"
 	if os.path.exists(dumpDir) is False: os.mkdir(dumpDir)
 
-	caseArray = data['data']['cases']
+	caseData = data['data']
+	if caseData is None:
+		print(f"ERROR: Failed to obtain data while downloading cases {fromCase} through {toCase}")
+		failedRanges.append(f"{fromCase}..{toCase}")
+		if quitAfterError:
+			sys.exit(1)
+		else:
+			return
+
+	caseArray = caseData['cases']
 	for caseData in caseArray:
 		caseNumber = str(caseData["ixBug"])
 		caseDir = os.path.join(dumpDir, caseNumber)
@@ -58,6 +79,11 @@ while currentStartCase <= endCase:
 	currentStartCase = currentEndCase + 1
 
 print("\nAll Done!\n")
+if len(failedRanges) > 0:
+	print("NOTE: The following ranges failed to download because of an error while fetching from FogBugz:\n")
+	for range in failedRanges:
+		print(range)
+	print("")
 
 if endCase == 50:
 	print("NOTE: You ran the script with the default endCase variable set to 50, so all of your cases were not downloaded. Edit the file to adjust the case range if you want to download more.")
