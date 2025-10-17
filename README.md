@@ -7,7 +7,7 @@ These scripts facilitate a two-step dump, first by downloading the JSON data for
 
 ### To Use
 
-1. Obtain a [FogBugz API key](https://support.fogbugz.com/hc/en-us/articles/360011330873-Create-API-Token-using-the-FogBugz-UI).
+1. Obtain a [FogBugz API key](https://support.fogbugz.com/en-us/article/52425-create-api-token-using-the-fogbugz-ui).
 2. Edit these variables near the top of each script:
 	- Change the apiToken variable to use your own API key.
 	- Change the fogBugzDomain from "redsweater.fogbugz.com" to your account/site's domain.
